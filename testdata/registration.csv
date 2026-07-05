@@ -1,0 +1,4 @@
+id,name,email,password
+TC001,Sarika,sarika@example.com,password123
+TC002,John,john@example.com,password456
+TC003,Alice,alice@example.com,password789
