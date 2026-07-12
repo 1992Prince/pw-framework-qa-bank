@@ -1,4 +1,3 @@
-
 # TypeScript Interview Questions & Speakable Answers
 
 *(Simple language, one example each, related to Playwright + TypeScript automation where useful)*
@@ -144,7 +143,21 @@ npx ts-node file1.ts             # npx runs it from node_modules
 ## 10. What are Types in TypeScript? List the different types.
 
 **Speakable answer:**
-"Types tell TypeScript what kind of value a variable can hold. The basic ones are similar to real-world data — string, number, boolean, array, object, tuple, enum, any, unknown, void, and never. Using the right type helps catch mistakes before the code runs."
+"Types tell TypeScript what kind of value a variable can hold.
+
+- The basic ones are similar to real-world data i.e. :
+- string,
+- number,
+- boolean,
+- array,
+- object,
+- tuple,
+- enum,
+- any,
+- unknown,
+- void, and
+- never.
+- Using the right type helps catch mistakes before the code runs."
 
 **Example:**
 
@@ -159,8 +172,8 @@ let tags: string[] = ["smoke", "regression"];
 
 ## 11. Difference between `any` and `unknown`
 
-**Speakable answer:**
-"Both can hold any kind of value, but `any` completely turns off type-checking — you can do anything with it, which is risky. `unknown` is safer: you can store any value in it, but TypeScript forces you to check or narrow its type before you actually use it."
+- "Both can hold any kind of value, but `any` completely turns off type-checking — you can do anything with it, which is risky.
+- `unknown` is safer: you can store any value in it, but TypeScript forces you to check or narrow its type before you actually use it."
 
 **Example:**
 
@@ -179,8 +192,8 @@ if (typeof b === "string") b.toUpperCase(); // ✅ safe
 
 ## 12. Difference between `void` and `never`
 
-**Speakable answer:**
-"`void` means a function doesn't return anything meaningful — it just completes. `never` means the function never completes normally at all, like when it always throws an error or loops forever."
+- "`void` means a function doesn't return anything meaningful — it just completes.
+- `never` means the function never completes normally at all, like when it always throws an error or loops forever."
 
 **Example:**
 
@@ -198,8 +211,21 @@ function throwError(msg: string): never {
 
 ## 13. How is a Tuple Different from an Array?
 
-**Speakable answer:**
-"An array is homogeneous and flexible in length — same type of items, any number of them. A tuple is fixed in length and can hold different types at fixed positions. We use arrays when we have a list of similar items, and tuples when we know exactly how many values and what type each position holds."
+- TypeScript arrays are **homogeneous by default**, meaning they store elements of the same type, and they are **flexible (dynamic) in length**.
+
+```typescript
+let names: string[] = ["John", "Alice"];
+```
+
+The above array can store only strings, but you can add or remove string elements at runtime. To store different types of values, use a **union type** or **`any`**.
+
+```typescript
+let data: (string | number)[] = ["John", 25];
+let arr: any[] = ["John", 25, true];
+
+- A tuple is fixed in length and can hold different types at fixed positions. 
+
+- We use arrays when we have a list of similar items, and tuples when we know exactly how many values and what type each position holds."
 
 **Example:**
 
@@ -221,7 +247,6 @@ console.log(user[5]);    // ❌ compile-time error, index out of range
 
 ## 14. Type Inference in TypeScript
 
-**Speakable answer:**
 "Type inference means TypeScript automatically figures out the type of a variable based on the value assigned, even if you didn't explicitly declare it. Once inferred, the type is locked in — you can't reassign a different type to it later."
 
 **Example:**
@@ -235,8 +260,9 @@ count = "five";      // ❌ Error - can't reassign a string type
 
 ## 15. What are Enums? Have you used them in your projects?
 
-**Speakable answer:**
-"An enum is a way to give friendly names to a fixed set of related values. In my automation framework, I've used enums for things like HTTP status codes or browser names, so instead of hardcoding numbers or strings everywhere, I use a readable name. Enums can also be passed as function arguments to keep the code type-safe."
+- An **enum** is a TypeScript feature that allows us to define a **fixed set of named constants**.
+- In my automation framework, I've used enums for things like HTTP status codes or browser names, so instead of hardcoding numbers or strings everywhere, I use a readable name.
+  -Enums can also be passed as function arguments to keep the code type-safe.
 
 **Example:**
 
@@ -264,10 +290,21 @@ launchBrowser(Browser.Chrome); // type-safe, no typos allowed
 
 ## 16. What is a Union Type? When to Use it Over `any`?
 
-**Speakable answer:**
-"A union type lets a variable hold one of several specific types, using the `|` symbol. We prefer a union type over `any` because it still gives us type safety — TypeScript knows exactly which types are allowed, unlike `any` which allows literally anything."
+- A **Union Type** allows a variable to hold **multiple specific types**. 
+- It is created using the **pipe (`|`) operator**. 
+- TypeScript only allows the types you specify, making the code type-safe. 
+- A union type should be preferred over `any` because `any` disables type checking, whereas a union allows flexibility while still providing compile-time type safety.
+
 
 **Example:**
+
+```typescript
+let value: string | number;
+
+value = "Playwright";
+value = 100;
+// value = true; ❌ Error
+```
 
 ```ts
 let testStatus: "pass" | "fail" | "skipped";
@@ -279,9 +316,57 @@ testStatus = "blocked"; // ❌ Error, not in the allowed list
 
 ---
 
-## 17. What is an Object Type in TypeScript?
+## 17. What is an Object Type in TypeScript? How can you create an object in different ways??
 
-**Speakable answer:**
+- An **object type** defines the structure of an object by specifying what properties and their data types it must have. 
+
+- TypeScript ensures that the object follows this structure.
+
+### 1. Using an inline Object Type
+```typescript
+let user: { name: string; age: number } = {
+  name: "John",
+  age: 25
+};
+```
+
+### 2. Using a `type` Alias
+```typescript
+type User = {
+  name: string;
+  age: number;
+};
+
+let user: User = {
+  name: "John",
+  age: 25
+};
+```
+
+### 3. Using an `interface`
+```typescript
+interface User {
+  name: string;
+  age: number;
+}
+
+let user: User = {
+  name: "John",
+  age: 25
+};
+```
+
+### 4. Using `Record<K, V>`
+```typescript
+type User = Record<"name" | "age", string | number>;
+
+let user: User = {
+  name: "John",
+  age: 25
+};
+```
+
+
 "An object type describes the shape of an object — what properties it has and what type each property should be."
 
 **Example:**
@@ -295,24 +380,41 @@ let testCase: { name: string; passed: boolean } = {
 
 ---
 
-## 18. Difference Between `type` and `interface`
+## 18. What is the difference between `type` and `interface` in TypeScript?
 
-**Speakable answer:**
-"Both are used to describe the shape of an object, and in most everyday cases they work the same way. The main difference is that `interface` can be re-opened and extended later (declaration merging), while `type` cannot be redeclared. Also, `type` can describe unions, tuples, and primitives directly, while `interface` is mainly for object shapes. In practice, most teams use `interface` for object/class shapes and `type` for unions or utility compositions."
+- Both `type` and `interface` are used to define custom types in TypeScript, and in many cases they can be used interchangeably. 
+
+- The main differences are:
+
+| `interface` | `type` |
+|-------------|--------|
+| Used mainly to define the structure of objects and classes. | Can define objects, primitives, unions, tuples, functions, and more. |
+| Supports declaration merging (the same interface can be declared multiple times). | Does not support declaration merging. |
+| Commonly used with classes using the `implements` keyword. | Can also be implemented by classes if it represents an object type. |
+| Preferred when defining object shapes or APIs. | Preferred when creating unions, intersections, tuples, or more complex types. |
 
 **Example:**
 
-```ts
-interface User { name: string; }
-type Status = "pass" | "fail"; // union - only possible with type
+```typescript
+interface User {
+  name: string;
+  age: number;
+}
+
+type Employee = {
+  name: string;
+  age: number;
+};
+
+type Status = "Pass" | "Fail";
 ```
 
 ---
 
 ## 19. What are Optional Properties? How Do You Define Them?
 
-**Speakable answer:**
-"Optional properties are properties that may or may not be present on an object. We mark them with a `?` after the property name."
+- Optional properties are properties that may or may not be present on an object.
+- We mark them with a `?` after the property name.
 
 **Example:**
 
@@ -329,8 +431,10 @@ const config: TestConfig = { browser: "chromium" }; // ✅ valid, headless not r
 
 ## 20. Difference Between `Partial<T>`, `Required<T>`, and `Record<K, V>`
 
-**Speakable answer:**
-"`Partial<T>` takes an existing type and makes all its properties optional — useful when updating only some fields. `Required<T>` does the opposite, it makes all properties mandatory even if they were optional originally. `Record<K, V>` is used to build a new object type where you define the key type and the value type, useful for maps or dictionaries."
+- `Partial<T>` takes an existing type and makes all its properties optional — useful when updating only some fields.
+- `Required<T>` does the opposite, it makes all properties mandatory even if they were optional originally.
+
+- `Record<K, V>` is used to build a new object type where you define the key type and the value type, useful for maps or dictionaries."
 
 **Example:**
 
@@ -350,10 +454,9 @@ const urls: EnvUrls = {
 
 ---
 
-## 21. Excess Property Check — What Happens With Extra Properties?
+## 21. Can you assign extra property to object that structure is defined by interface type? Excess Property Check — What Happens With Extra Properties?
 
-**Speakable answer:**
-"When you directly assign an object literal to a typed variable, TypeScript checks it strictly and throws an error if there are extra properties not defined in the type. This is called excess property checking. It doesn't happen if you assign through a variable instead of a literal directly."
+- When you directly assign an object literal to a typed variable, TypeScript checks it strictly and throws an error if there are extra properties not defined in the type. This is called excess property checking. It doesn't happen if you assign through a variable instead of a literal directly.
 
 **Example:**
 
@@ -368,10 +471,11 @@ const u2: User = temp; // ✅ Allowed, no direct literal check
 
 ---
 
-## 22. Functions with Types — Return Type, Args, Optional Args, Default Values
+## 22. How to define Functions with Types — Return Type, Args, Optional Args, Default Values
 
-**Speakable answer:**
-"We can type function parameters and return values. Parameters can be required, optional using `?`, or given a default value. If a function doesn't return anything meaningful, we type its return as `void`."
+- We can type function parameters and return values. 
+- Parameters can be required, optional using `?`, or given a default value. 
+- If a function doesn't return anything meaningful, we type its return as `void`."
 
 **Example:**
 
@@ -394,9 +498,8 @@ function launch(config: Config = { headless: true }) { }
 
 ---
 
-## 23. Interface Extending Another Interface
+## 23. How a Interface extends Another Interface?
 
-**Speakable answer:**
 "An interface can extend another interface using the `extends` keyword, which means it inherits all the properties of the parent and can add its own."
 
 **Example:**
@@ -415,9 +518,8 @@ const test: UITest = { name: "Login", browser: "chromium" };
 
 ---
 
-## 24. Type Extending Another Type
+## 24. Can we extend one type with another using extends keyword ?
 
-**Speakable answer:**
 "For `type`, we don't use `extends`, we use an intersection with `&` to combine two types together."
 
 **Example:**
@@ -433,7 +535,6 @@ const test: UITest = { name: "Login", browser: "chromium" };
 
 ## 25. Can We Create Two Interfaces with the Same Name?
 
-**Speakable answer:**
 "Yes — TypeScript automatically merges them into one interface with all the combined properties. This is called declaration merging. This is different from `type`, where duplicate names are not allowed."
 
 **Example:**
@@ -448,14 +549,12 @@ interface User { age: number; }
 
 ## 26. Can We Create Two Types with the Same Name?
 
-**Speakable answer:**
 "No — unlike interfaces, `type` cannot be declared twice with the same name in the same scope. TypeScript will throw a duplicate identifier error."
 
 ---
 
 ## 27. What Kinds of Properties Can an Object Have?
 
-**Speakable answer:**
 "An object's properties can be mandatory, optional, readonly, or have a default value passed in through a function parameter."
 
 | Kind                   | Syntax                      | Meaning                            |
@@ -469,8 +568,8 @@ interface User { age: number; }
 
 ## 28. What is a `readonly` Property? When Would You Use It?
 
-**Speakable answer:**
-"A `readonly` property can be assigned a value only once — usually when the object is created — and can't be changed afterward. It's useful for values that should never change during execution, like a test's unique ID or a fixed config value."
+- A `readonly` property can be assigned a value only once — usually when the object is created — and can't be changed afterward.
+- It's useful for values that should never change during execution, like a test's unique ID or a fixed config value."
 
 **Example:**
 
@@ -488,8 +587,9 @@ tc.id = 102; // ❌ Error, cannot reassign readonly property
 
 ## 29. What is `Record<K, V>` and How Do You Use It?
 
-**Speakable answer:**
-"`Record<K, V>` is a utility type used to build an object type where all keys are of type `K` and all values are of type `V`. It's handy for things like config maps or lookup tables."
+- `Record<K, V>` is a built-in TypeScript utility type used to create an object type.
+- Here, **`K` represents the keys** of the object, and **`V` represents the type of values** those keys will store.
+- It is useful when all keys should follow the same value structure, such as configuration objects or lookup tables.
 
 **Example:**
 
@@ -501,6 +601,10 @@ const config: EnvConfig = {
   qa: { url: "https://qa.app.com" },
   prod: { url: "https://app.com" },
 };
+
+**Syntax Explanation:**
+- `"dev" | "qa" | "prod"` → Defines the allowed object keys.
+- `{ url: string }` → Specifies that every key must have an object with a `url` property of type `string`.
 ```
 
 ---
