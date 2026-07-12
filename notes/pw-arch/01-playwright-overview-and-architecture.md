@@ -12,7 +12,7 @@
 6. [Playwright Architecture — Internal Working](#6-playwright-architecture--internal-working)
 7. [HTTP vs WebSocket — Speed Difference in Detail](#7-http-vs-websocket--speed-difference-in-detail)
 8. [Selenium vs Playwright — Key Differences Summary](#8-selenium-vs-playwright--key-differences-summary)
-9. [Interview Questions & Answers](#9-interview-questions--answers)
+9. [Interview Questions &amp; Answers](#9-interview-questions--answers)
 
 ---
 
@@ -43,37 +43,35 @@ It is used to automate end-to-end web application interactions — meaning it ca
 ## 3. Key Features of Playwright
 
 - **Cross-Browser Support** — Playwright supports all major browsers: **Firefox, Edge, Chromium (Chrome), and Safari (WebKit)**. You write one test and it runs on all of them.
-
 - **API Testing** — Playwright supports not just UI testing but also **API testing** — you can make HTTP requests and assert responses directly within Playwright tests.
-
 - **Mobile Emulation (Not Native Mobile)** — Playwright does **not** support native mobile app automation (like Appium does). However, if your app runs in a mobile browser, you can set **device emulation** in config (e.g., iPhone 13, Pixel 5) and Playwright will simulate that device's:
+
   - Screen size
   - User agent
   - Viewport
-
 - **WebSocket Protocol** — Playwright uses WebSocket protocol internally to communicate with the browser. This means:
+
   - Connection is created **once** at the start
   - Same connection is kept alive for the **entire test execution**
   - Connection is **persistent and bidirectional** (browser can also send messages back)
   - Much faster than HTTP which opens a new connection for every request
-
 - **Multi-Language Support** — Playwright supports:
+
   - JavaScript
   - TypeScript
   - Java
   - Python
   - C# / .NET
-
 - **Inbuilt Auto-Waits and Auto-Retry Mechanisms** — No need to write manual waits for most actions.
-
 - **Rich Test Runner Features** — Playwright test runner (`@playwright/test`) provides:
+
   - Web-first assertions
   - Screenshots
   - Videos
   - Trace recording
   - Parallel execution
-
 - **Developer Tooling** — Playwright provides:
+
   - **Codegen** — record user actions and auto-generate test code
   - **UI Mode** — interactive test runner UI
   - **Inspector** — debug tests step by step
@@ -120,6 +118,7 @@ Client (Test Code)  →  Browser Driver (.exe)  →  Real Browser
 
 - **Client** — test code written in any supported language like Java, Python, or JavaScript.
 - **Browser Driver (.exe)** — a separate executable that acts as a middleman between test code and the real browser. Each browser has its own driver:
+
   - `chromedriver.exe` → Chrome
   - `geckodriver.exe` → Firefox
   - `msedgedriver.exe` → Edge
@@ -191,14 +190,14 @@ In contrast, **Selenium required polling** — the client had to repeatedly ask 
 
 ## 7. HTTP vs WebSocket — Speed Difference in Detail
 
-| Aspect | HTTP | WebSocket |
-|--------|------|-----------|
-| **Connection Type** | Request-response, closes after each call | Persistent, stays open |
-| **Direction** | Unidirectional (client initiates) | Bidirectional (both sides can send) |
-| **State** | Stateless | Stateful |
-| **Overhead** | New TCP handshake per request | Handshake happens once |
-| **Used By** | Selenium (W3C WebDriver Protocol) | Playwright |
-| **100 Commands** | 100 connections = slow | 1 connection = fast |
+| Aspect                    | HTTP                                     | WebSocket                           |
+| ------------------------- | ---------------------------------------- | ----------------------------------- |
+| **Connection Type** | Request-response, closes after each call | Persistent, stays open              |
+| **Direction**       | Unidirectional (client initiates)        | Bidirectional (both sides can send) |
+| **State**           | Stateless                                | Stateful                            |
+| **Overhead**        | New TCP handshake per request            | Handshake happens once              |
+| **Used By**         | Selenium (W3C WebDriver Protocol)        | Playwright                          |
+| **100 Commands**    | 100 connections = slow                   | 1 connection = fast                 |
 
 ### Key Points
 
@@ -214,18 +213,18 @@ In contrast, **Selenium required polling** — the client had to repeatedly ask 
 
 ## 8. Selenium vs Playwright — Key Differences Summary
 
-| Aspect | Selenium | Playwright |
-|--------|----------|------------|
-| **Protocol** | HTTP (W3C WebDriver) — new connection per command | WebSocket — one persistent connection |
-| **Browser Executables** | Requires separate browser driver `.exe` files (latest versions handle auto-download) | No `.exe` needed — downloads its own patched browser engines via `npx playwright install` |
-| **Safari on Windows** | Cannot run Safari tests on Windows | Cross-platform Safari testing via patched WebKit engine (runs on Windows and Linux too) |
-| **Browser Version Mismatch** | Common issue between browser and driver versions | Never happens — browser binaries are always bundled and matched with the Playwright version |
-| **Test Runner** | No built-in test runner — needs TestNG / JUnit etc. | Built-in test runner `@playwright/test` with parallel execution, retries, reporters out of the box |
-| **Cross Browser Execution** | Requires custom logic | Simply configured in `playwright.config.ts` under the `projects` block |
-| **StaleElementException** | `driver.findElement()` locates element immediately and holds reference → throws `StaleElementException` on DOM changes | `page.locator()` uses **lazy initialization** — element is located fresh at the time of each action. Stale element issue never occurs |
-| **Rerunning Failed Tests** | Requires complex TestNG listeners and custom logic | Simply configured in `playwright.config.ts` with the `retries` property |
-| **Video and Trace** | Recording video requires third-party setup; trace not available | Both built-in and configurable directly in `playwright.config.ts` |
-| **Waiting Strategy** | Explicit or implicit waits had to be written manually for every interaction | Built-in **auto-waiting and auto-retry** on most action methods and web-first assertions |
+| Aspect                             | Selenium                                                                                                                    | Playwright                                                                                                                                     |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Protocol**                 | HTTP (W3C WebDriver) — new connection per command                                                                          | WebSocket — one persistent connection                                                                                                         |
+| **Browser Executables**      | Requires separate browser driver`.exe` files (latest versions handle auto-download)                                       | No`.exe` needed — downloads its own patched browser engines via `npx playwright install`                                                  |
+| **Safari on Windows**        | Cannot run Safari tests on Windows                                                                                          | Cross-platform Safari testing via patched WebKit engine (runs on Windows and Linux too)                                                        |
+| **Browser Version Mismatch** | Common issue between browser and driver versions                                                                            | Never happens — browser binaries are always bundled and matched with the Playwright version                                                   |
+| **Test Runner**              | No built-in test runner — needs TestNG / JUnit etc.                                                                        | Built-in test runner`@playwright/test` with parallel execution, retries, reporters out of the box                                            |
+| **Cross Browser Execution**  | Requires custom logic                                                                                                       | Simply configured in`playwright.config.ts` under the `projects` block                                                                      |
+| **StaleElementException**    | `driver.findElement()` locates element immediately and holds reference → throws `StaleElementException` on DOM changes | `page.locator()` uses **lazy initialization** — element is located fresh at the time of each action. Stale element issue never occurs |
+| **Rerunning Failed Tests**   | Requires complex TestNG listeners and custom logic                                                                          | Simply configured in`playwright.config.ts` with the `retries` property                                                                     |
+| **Video and Trace**          | Recording video requires third-party setup; trace not available                                                             | Both built-in and configurable directly in`playwright.config.ts`                                                                             |
+| **Waiting Strategy**         | Explicit or implicit waits had to be written manually for every interaction                                                 | Built-in**auto-waiting and auto-retry** on most action methods and web-first assertions                                                  |
 
 ---
 
@@ -276,16 +275,17 @@ So Playwright is not a replacement for Selenium in every scenario, but it solves
 
 **Differences between HTTP and WebSocket:**
 
-| Feature | HTTP | WebSocket |
-|---------|------|-----------|
-| **Connection** | Opens, serves one request, closes | Opens once, stays persistent |
-| **Direction** | Unidirectional — only client can initiate | Bidirectional — both client and server can send data anytime |
-| **State** | Stateless | Stateful |
-| **Overhead** | New TCP handshake per request | Handshake only once |
-| **Real-time events** | Requires polling | Server can push events instantly |
-| **Speed for multiple requests** | Slow (100 commands = 100 connections) | Fast (100 commands = 1 connection) |
+| Feature                               | HTTP                                       | WebSocket                                                     |
+| ------------------------------------- | ------------------------------------------ | ------------------------------------------------------------- |
+| **Connection**                  | Opens, serves one request, closes          | Opens once, stays persistent                                  |
+| **Direction**                   | Unidirectional — only client can initiate | Bidirectional — both client and server can send data anytime |
+| **State**                       | Stateless                                  | Stateful                                                      |
+| **Overhead**                    | New TCP handshake per request              | Handshake only once                                           |
+| **Real-time events**            | Requires polling                           | Server can push events instantly                              |
+| **Speed for multiple requests** | Slow (100 commands = 100 connections)      | Fast (100 commands = 1 connection)                            |
 
 **In the context of Playwright vs Selenium:**
+
 - Selenium uses HTTP → each command opens and closes a connection → slower.
 - Playwright uses WebSocket → one connection for all commands + real-time event push → faster.
 
@@ -334,13 +334,9 @@ Client (Test Code)  →  Browser Binaries (Playwright managed)
 Playwright tests execute faster than Selenium because of several architectural reasons:
 
 1. **WebSocket vs HTTP** — Playwright uses a **single persistent WebSocket connection** for the entire test run, whereas Selenium creates a **new HTTP connection for every command**. For 100 commands, Selenium makes 100 TCP handshakes, Playwright makes only 1.
-
 2. **No middleman driver** — Playwright communicates directly with its patched browser binaries via CDP. Selenium has to go through a separate driver `.exe` which adds extra hops.
-
 3. **Bidirectional communication** — The browser pushes events to Playwright in real time. Selenium has to keep polling the browser, which wastes time.
-
 4. **Built-in auto-wait** — Playwright automatically waits for elements to be ready, preventing unnecessary wait time or retries. In Selenium, explicit/implicit waits add delay when not tuned correctly.
-
 5. **Parallel execution by default** — Playwright runs tests in parallel in isolated browser contexts out of the box, while Selenium needs extra configuration (Grid, TestNG XML, etc.).
 
 > ⚠️ **Important:** Playwright only makes **test execution** faster. It does **not** make the application under test faster. If the app itself is slow, Playwright tests will also be slow.
@@ -354,16 +350,12 @@ Playwright tests execute faster than Selenium because of several architectural r
 To install and run Playwright (JavaScript/TypeScript version), the following prerequisites are required:
 
 1. **Node.js** — Playwright requires Node.js (latest LTS version recommended, e.g., Node.js 18+ or 20+). Download from [https://nodejs.org](https://nodejs.org).
-
 2. **npm** (comes bundled with Node.js) — used to install Playwright packages.
-
 3. **Code Editor / IDE** — Visual Studio Code is recommended. It also has an official **Playwright Test for VS Code** extension that provides UI for running, debugging, and recording tests.
-
 4. **Operating System** — Windows, macOS, or Linux (all supported).
-
 5. **Internet connection** — required during first install to download browser binaries (`npx playwright install`).
-
 6. **Optional (but recommended):**
+
    - **Git** — for version control
    - **TypeScript knowledge** — since Playwright tests are commonly written in TypeScript
 
@@ -384,6 +376,7 @@ npx playwright install
 ```
 
 For other languages:
+
 - **Python** — requires Python 3.8+ and install via `pip install playwright` followed by `playwright install`.
 - **Java** — requires Java 8+ and Maven/Gradle, with the Playwright Java dependency added.
 - **.NET** — requires .NET 6+ and install via `dotnet add package Microsoft.Playwright`.
@@ -395,12 +388,14 @@ For other languages:
 **Answer:**
 
 **Head Mode (Headed Mode / Headful Mode):**
+
 - The browser UI **is visible** on the screen while the test is executing.
 - You can actually see the browser open, pages navigate, clicks happen, form filling, etc.
 - Useful for **debugging**, **demonstration**, or **visual verification** of test behavior.
 - Slightly **slower** because the browser has to render UI pixels on the screen.
 
 **Headless Mode:**
+
 - The browser runs **in the background without a visible UI**.
 - No browser window is shown on the screen; everything happens internally.
 - **Faster** because the browser skips UI rendering.
@@ -438,16 +433,16 @@ const browser = await chromium.launch({ headless: false });
 
 ## ✅ Quick Revision Checklist
 
-- [x] Playwright = Microsoft's open-source E2E test automation framework
-- [x] Supports Chromium, Firefox, Edge, Safari (WebKit)
-- [x] Supports JS, TS, Java, Python, C# / .NET
-- [x] Uses **WebSocket + CDP** (not HTTP)
-- [x] **One connection** for all commands → faster than Selenium
-- [x] **2 components** (Client + Browser Binaries); Selenium has **3 components** (Client + Driver + Browser)
-- [x] Built-in auto-wait, parallel execution, retries, screenshots, videos, trace viewer
-- [x] No StaleElementException due to lazy locator initialization
-- [x] Default mode = **Headless**
-- [x] Install via `npm init playwright@latest` + `npx playwright install`
+- [X] Playwright = Microsoft's open-source E2E test automation framework
+- [X] Supports Chromium, Firefox, Edge, Safari (WebKit)
+- [X] Supports JS, TS, Java, Python, C# / .NET
+- [X] Uses **WebSocket + CDP** (not HTTP)
+- [X] **One connection** for all commands → faster than Selenium
+- [X] **2 components** (Client + Browser Binaries); Selenium has **3 components** (Client + Driver + Browser)
+- [X] Built-in auto-wait, parallel execution, retries, screenshots, videos, trace viewer
+- [X] No StaleElementException due to lazy locator initialization
+- [X] Default mode = **Headless**
+- [X] Install via `npm init playwright@latest` + `npx playwright install`
 
 ---
 
