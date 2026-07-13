@@ -1,4 +1,3 @@
-
 ## Locators & Selector Strategies
 
 ### Q1: What is the difference between a locator and a selector?
@@ -18,7 +17,6 @@
 // Chaining example
 const row = page.locator('table tr');
 const button = row.locator('button.delete');
-
 ```
 
 ---
@@ -36,6 +34,28 @@ const button = row.locator('button.delete');
 7. `getByTestId` (locates by `data-testid` attribute)
 
 * **Legacy Support:** "Playwright also fully supports CSS and XPath selectors via the `page.locator()` method."
+
+
+Since there are  **7 Playwright locators** , a memorable mnemonic can make them much easier to recall during interviews.
+
+### Mnemonic 1 (Recommended)
+
+#### **"Real Testers Love Playing Around The Browser"**
+
+| Word              | Locator                |
+| ----------------- | ---------------------- |
+| **Real**    | `getByRole()`        |
+| **Testers** | `getByText()`        |
+| **Love**    | `getByLabel()`       |
+| **Playing** | `getByPlaceholder()` |
+| **Around**  | `getByAltText()`     |
+| **The**     | `getByTitle()`       |
+| **Browser** | `getByTestId()`      |
+
+So remember:
+
+> **Real Testers Love Playing Around The Browser** 🚀
+>
 
 ---
 
