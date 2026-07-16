@@ -1,49 +1,5 @@
 ## 1. Architecture & Installation Questions
 
-### Q1: What is Playwright and how does it differ from Selenium and Cypress?
-
-* **What it is:** "Playwright is a modern, open-source automation framework built by Microsoft for end-to-end testing of web applications. It's fast, reliable, and supports all major browser engines out of the box."
-* **Difference from Selenium:** "Selenium uses HTTP requests via the WebDriver protocol, which introduces a slight network overhead. Playwright, on the other hand, communicates over a single, persistent WebSocket connection, making it significantly faster and less flaky."
-* **Difference from Cypress:** "Cypress executes tests inside the browser itself, which limits it to a single origin and restricts multi-tab or multi-window testing. Playwright runs out-of-process, meaning it completely controls the browser externally, easily supporting multi-domain, multi-tab, and mobile emulation workflows."
-
----
-
-### Q2: Explain Playwright's architecture — how does it communicate with browsers (client library → driver/WebSocket → browser)?
-
-* **The Flow:** "Playwright uses a single-process, out-of-process architecture. When you run a test, your code in the client library talks to the Playwright driver."
-* **The Connection:** "The driver establishes a persistent, bi-directional WebSocket connection with the browser. It sends commands and listens to browser events over the Chrome DevTools Protocol (CDP) for Chromium, or similar custom protocols for Firefox and WebKit."
-* **The Advantage:** "Because everything happens over a single WebSocket, commands are delivered in real time with near-zero latency. This lets Playwright handle events like network interception, file downloads, and geo-location mocking instantly."
-
----
-
-### Q3: What are the three browser engines Playwright supports, and how do you target each?
-
-* **The Engines:** "Playwright supports Chromium (the engine behind Chrome and Edge), WebKit (Safari's engine), and Firefox."
-* **Targeting via Config:** "You typically target them inside the `playwright.config.ts` file by defining different projects."
-* **Targeting via Code:** "If you are script-writing without the test runner, you launch them explicitly."
-
-```typescript
-// Targeting via playwright.config.ts
-export default defineConfig({
-  projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
-  ],
-});
-
-```
-
----
-
-### Q4: How do you install Playwright and initialize a new project? What does `npx playwright install` do that `npm install` doesn't?
-
-* **Initialization:** "To kickstart a project, I run `npm init playwright@latest`. This sets up the directory structure, adds the required dependencies, and creates a sample configuration file."
-* **`npm install` vs `npx playwright install`:** "`npm install` only downloads the Node.js package/wrappers into your `node_modules`. It doesn't download the actual browser binaries."
-* **What the driver command does:** "Running `npx playwright install` triggers the Playwright driver to download the specific, patched versions of the Chromium, Firefox, and WebKit browser binaries to your local system cache so they are ready to execute."
-
----
-
 ### Q5: What is `playwright.config.ts`, and what are its most important fields?
 
 * **Definition:** "It’s the central configuration file for your entire Playwright test suite. It dictates how tests are discovered, executed, and reported."
@@ -53,8 +9,6 @@ export default defineConfig({
 * **`use`**: Globally configures options for the browser context, like `baseURL`, `trace: 'on-first-retry'`, and `screenshot`.
 * **`projects`**: An array that lets you split execution across different browsers, viewports, or environments.
 * **`reporter`**: Defines output formats like HTML, JSON, or Dot matrix.
-
-
 
 ---
 
@@ -68,7 +22,6 @@ export default defineConfig({
 import { chromium } from 'playwright';
 const browser = await chromium.launch();
 // ...
-
 ```
 
 ---
@@ -94,7 +47,6 @@ const userContext = await browser.newContext();
 
 const adminPage = await adminContext.newPage();
 const userPage = await userContext.newPage();
-
 ```
 
 ---
@@ -124,20 +76,16 @@ test('Test Two - Independent Session', async ({ page }) => {
 });
 
 ```
+
 ---
 
 ### Q11: What Playwright core objects are you aware of?
 
 * **Browser:** "This is the actual instance of the browser process—like Chromium, Firefox, or WebKit—launched by the Playwright driver."
-
 * **BrowserContext:** "An isolated session inside the Browser instance. It manages its own cookies, storage, and permissions without overlapping with other contexts."
-
 * **Page:** "This represents a single tab or window within a BrowserContext, used to navigate URLs and interact with the page contents."
-
 * **Frame / FrameLocator:** "This represents the main page frame or an embedded iframe inside the webpage, allowing you to interact with elements inside nested contexts."
-
 * **Locator:** "The core element pointer in Playwright. It encapsulates the strategy to find elements on the page and comes built-in with automatic waiting capabilities."
-
 * **Request & Response:** "Objects that model network events, allowing you to monitor, intercept, and modify HTTP traffic happening during execution."
 
 ```typescript
@@ -162,8 +110,6 @@ const locator = page.locator('#submit-btn');     // 4. Locator
 * **`proxy`**: Configures a global network proxy for all traffic routed through this browser instance.
 * **`args`**: An array of additional command-line arguments passed directly to the browser binary instance (e.g., configuring flags).
 
-
-
 ```typescript
 const browser = await chromium.launch({
   headless: false,
@@ -186,8 +132,6 @@ const browser = await chromium.launch({
 * **`isMobile` and `hasTouch**`: Emulates a mobile device environment, altering how the browser scales content and handles touch interactions.
 * **`extraHTTPHeaders`**: Injects an object of standard HTTP headers into every network request initiated by pages in this context.
 * **`ignoreHTTPSErrors`**: Prevents tests from failing when hitting environments with self-signed or invalid SSL certificates.
-
-
 
 ```typescript
 const context = await browser.newContext({

@@ -35,29 +35,19 @@ const button = row.locator('button.delete');
 
 * **Legacy Support:** "Playwright also fully supports CSS and XPath selectors via the `page.locator()` method."
 
-
 Since there are  **7 Playwright locators** , a memorable mnemonic can make them much easier to recall during interviews.
 
 ### Mnemonic 1 (Recommended)
 
-#### **"Real Testers Love Playing Around The Browser"**
+**TRAP TTL** (imagine you are trying to *trap* a bug before its *TTL* expires).
 
-| Word              | Locator                |
-| ----------------- | ---------------------- |
-| **Real**    | `getByRole()`        |
-| **Testers** | `getByText()`        |
-| **Love**    | `getByLabel()`       |
-| **Playing** | `getByPlaceholder()` |
-| **Around**  | `getByAltText()`     |
-| **The**     | `getByTitle()`       |
-| **Browser** | `getByTestId()`      |
-
-So remember:
-
-> **Real Testers Love Playing Around The Browser** 🚀
->
-
----
+* **T** – `getByText`
+* **R** – `getByRole`
+* **A** – `getByAltText`
+* **P** – `getByPlaceholder`
+* **T** – `getByTitle`
+* **T** – `getByTestId`
+* **L** – `getByLabel`
 
 ### Q4: Why is `getByRole` highly recommended, and why are `getBy` locators less fragile than CSS/XPath?
 
