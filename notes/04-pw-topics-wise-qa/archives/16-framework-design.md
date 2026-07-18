@@ -1,4 +1,3 @@
-
 # Framework Architecture & Design Decisions
 
 ### 1. How would you scale an automation framework from 100 tests to 10,000 tests?
@@ -117,10 +116,11 @@
 
 ### 16. How do you maintain automation scripts in Agile environments?
 
-- Update tests as part of the same sprint/PR as the feature change — not after
 - Keep a fast smoke suite that runs on every PR, full regression nightly
 - Regularly review and delete obsolete/duplicate tests
-- Pair with devs on locator strategy during feature development, not after release
+- Pair with devs on locator strategy to provide us stable locators like testdataid etc.
+- In each sprint we have progression features, we select regression scenarios from them and let our arch knows and in next sprint we automate it. If only small change is req then we update our existing suite in same sprint.
+- Our script mainatinace and optimization are part of daily resp with code reviews with team and copilot.
 
 ### 17. How do you validate email/SMS/downstream flows in end-to-end automation?
 

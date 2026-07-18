@@ -1,4 +1,3 @@
-
 # JavaScript Objects - Important Interview Questions & Answers
 
 ## 1. What are Objects in JavaScript? Explain with an example.
@@ -257,6 +256,74 @@ let deepCopy = structuredClone(user);
 | Nested objects share the same reference | Every nested object gets a new copy |
 | Created using Spread Operator (`...`) | Created using`structuredClone()`  |
 
+#### Shallow Copy
+
+> A **shallow copy** creates a new object only at the first level. If the object contains nested objects, those nested objects are still shared between the original and copied object.
+
+#### Example
+
+```javascript
+let user = {
+    name: "Prince",
+    age: 34,
+    address: {
+        houseNo: 1105,
+        city: "Noida"
+    }
+};
+
+let user2 = { ...user };
+
+user2.address.houseNo = 1106;
+
+console.log(user.address.houseNo); // 1106
+```
+
+#### Why?
+
+> `user2` is a new object, but `address` still points to the same object in memory.
+
+```javascript
+console.log(user.address === user2.address);
+```
+
+Output
+
+```
+true
+```
+
+---
+
+#### Deep Copy
+
+> A **deep copy** creates completely new copies of the object, including all nested objects. Changes made to the copied object do not affect the original object.
+
+#### Example
+
+```javascript
+let user3 = structuredClone(user);
+
+user3.address.houseNo = 1450;
+
+console.log(user3.address.houseNo); // 1450
+console.log(user.address.houseNo);  // 1105
+```
+
+#### Why?
+
+> `structuredClone()` creates a completely independent copy of every nested object.
+
+```javascript
+console.log(user3.address === user.address);
+```
+
+Output
+
+```
+false
+```
+
 ---
 
 ## 14. What is Object Destructuring?
@@ -321,6 +388,10 @@ console.log(merged.age); // 30
 ## 16. What is the difference between a JavaScript Object and JSON?
 
 **Answer:**
+
+A JavaScript object is a **non-primitive data type** that is stored in **heap memory**. It consists of **key-value pairs**, where the **key is a string (quotes are optional)** and the **value can be of any JavaScript data type**, such as string, number, boolean, object, array, function, etc.
+
+JSON (JavaScript Object Notation) is a **text-based data interchange format** used to store and exchange data between systems. JSON files have the **`.json`** extension. Like JavaScript objects, JSON contains **key-value pairs**, but **keys must always be enclosed in double quotes**, and values can only be valid JSON data types (string, number, boolean, object, array, or `null`).
 
 | JavaScript Object                      | JSON                                     |
 | -------------------------------------- | ---------------------------------------- |
