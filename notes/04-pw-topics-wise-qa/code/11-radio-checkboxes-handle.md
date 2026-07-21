@@ -1,4 +1,3 @@
-
 # Checkbox / Radio Handling — Interview Revision Notes
 
 ## 1. check() — Force CHECKED
@@ -141,3 +140,60 @@ console.log('All labels:', allLabels);
 ```
 
 **Interview point:** Use `checked: true` / `checked: false` filters when you need to fetch **only selected** or **only unselected** items — no need to loop through everything and check state manually. Use `allTextContents()` when you just need a flat array of text and don't need per-element actions.
+
+---
+
+## 7. Fetching Checkbox/Radio Text — Scoped to ONE Section of the Page
+
+- Strategies A–D above assume you want checkboxes/radios from the **whole page**. But real pages often have **multiple cards/sections**, each with their own checkboxes and radios (e.g., a "Radio Buttons & Checkboxes" card, plus other unrelated cards).
+- If you locate checkboxes globally with `page.getByRole('checkbox')`, you'll pick up elements from **every section**, not just the one you care about.
+- **Fix:** first locate the **parent container** for that specific section, then chain `.locator()` off of it. Playwright's `.locator()` searches **descendants at any nesting depth** within that scope (not just direct children) — so it behaves like a scoped CSS `descendant` selector (`parent *.class`), no matter how deeply the checkbox/radio elements are nested inside.
+- This is the key idea: **scope first, then search inside that scope** — rather than filtering a page-wide result set after the fact.
+
+```ts
+import { test, expect } from "@playwright/test";
+
+test("Fetch all checkboxes - text", async ({ page }) => {
+  await page.goto("https://gauravkhurana.com/practise-api/ui/index.html#/practice");
+
+  // 1. Scope to the parent card/section first
+  let checkboxRadioParentEle = page
+    .locator("//*[@class='card']")
+    .filter({ hasText: "Radio Buttons & Checkboxes" });
+
+  // 2. Checkboxes nested at any level inside that scope
+  let allcheckboxes = checkboxRadioParentEle.locator(".checkbox-label");
+  await allcheckboxes.first().waitFor();
+
+  let count = await allcheckboxes.count();
+  for (let i = 0; i < count; i++) {
+    let text = await allcheckboxes.nth(i).innerText();
+    console.log("Checkbox text is - ", text);
+  }
+
+  // 3. Radios nested at any level inside the SAME scope
+  let allradiobuttons = checkboxRadioParentEle.locator(".radio-label");
+  await allradiobuttons.first().waitFor();
+
+  count = await allradiobuttons.count();
+  for (let i = 0; i < count; i++) {
+    let text = await allradiobuttons.nth(i).innerText();
+    console.log("Radio text is - ", text);
+  }
+});
+```
+
+**Why this works / interview notes:**
+
+| Step                                                              | What it does                                                                                                      | Why it matters                                                                                                                                                                |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `page.locator("//*[@class='card']").filter({ hasText: "..." })` | Finds the specific card element that contains the target text, out of possibly many`.card` elements on the page | Gives you a**scoped root** instead of searching the entire page                                                                                                         |
+| `checkboxRadioParentEle.locator(".checkbox-label")`             | Chains a locator off the scoped root                                                                              | Playwright resolves this as**any descendant** matching `.checkbox-label` inside that root, regardless of how deep it's nested (divs, spans, wrapper components, etc.) |
+| `.first().waitFor()`                                            | Waits for at least one match before counting                                                                      | Avoids race conditions where`count()` runs before the section has rendered                                                                                                  |
+
+- Contrast with Strategy A/B/C: those use `page.locator(...)` / `page.getByRole(...)` directly from the page root, so they'll match **every** checkbox/radio on the page. Use the scoped-parent approach whenever the page has **multiple independent groups** of checkboxes/radios and you only want one group's text.
+- `innerText()` vs `textContent()`: `innerText()` respects CSS visibility (rendered text only) and is generally preferred for UI-facing label text; `textContent()` returns raw text including hidden elements — pick based on whether hidden/collapsed text should count.
+
+**🎯 Key Interview Talking Point:**
+
+> "If a page has multiple sections that each contain checkboxes or radios, I don't query the whole page directly — I first scope a locator to that section's parent container, usually via `filter({ hasText })` or a stable test id. Then I chain `.locator()` off that scoped element. Playwright resolves chained locators as descendants at any nesting depth, so it doesn't matter how deeply the checkbox or radio elements are nested inside — I still only get matches from within that one section, not the whole DOM."

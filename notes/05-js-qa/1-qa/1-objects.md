@@ -155,9 +155,11 @@ for (let key in user) {
 
 **Answer:**
 
+`✅ All three methods return arrays, but the contents are different.` 
+
 ```javascript
-Object.keys(user);
-Object.values(user);
+Object.keys(user); // Returns an array of keys.
+Object.values(user); // Returns an array of values.
 Object.entries(user);
 ```
 

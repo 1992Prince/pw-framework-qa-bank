@@ -765,7 +765,14 @@ const arr = new Array(-1);
 
 ## Q. What is the module system in JavaScript (import/export)?
 
-The JavaScript Module System is a way to split code into multiple files (modules) so that code is easier to organize, reuse, and maintain.
+- The module system is JavaScript's built-in way to split code across multiple files, where each file explicitly controls what it exposes with export and explicitly pulls in what it needs with import — instead of everything living in one global scope.
+- A way to break code into separate, reusable files (modules), each with its own scope
+- Each module explicitly exports what it wants to share, and other modules explicitly import only what they need
+- Introduced natively in ES6 (ECMAScript 2015) via the import/export keywords
+- Before modules, all script files shared the same global scope — variable/function names could clash across files
+- Modules give each file its own scope — nothing is accessible outside unless explicitly exported
+- Makes code more maintainable, reusable, and easier to reason about (clear dependencies between files)
+- Singleton behavior — a module is only executed once; if imported in multiple places, all of them share the same instance (useful for things like config objects or singletons)
 
 A module can:
 
@@ -831,9 +838,12 @@ greet();
 
 ## Q. What are Named Exports, Named Imports, and Default Exports?
 
+JavaScript modules support two export styles — named exports, where a file can export multiple values [variables, class, functions] by name, and a default export, which is the one primary thing a file exports.
+
 ### Named Export
 
-A file can have **multiple named exports**.
+- A file can have multiple named exports.
+- Each export has a specific name, and that name must be used (or aliased) at import time
 
 ```javascript
 // math.js
@@ -859,7 +869,8 @@ import { add as addition } from "./math.js";
 
 ### Default Export
 
-A file can have **only one default export**.
+- A file can have only one default export
+- It represents "the main thing" that file is responsible for
 
 ```javascript
 // greet.js
@@ -912,18 +923,19 @@ Import:
 import multiply, { add } from "./math.js";
 
 ```
+
 ## Q. How do you convert a string to a number and vice versa in JavaScript?
 
 ### Interview Differences
 
-| Method | Use Case |
-|---------|----------|
-| `Number()` | Converts the entire string. Returns `NaN` if the string isn't a valid number. |
-| `+str` | Shorthand for `Number()`. |
-| `parseInt()` | Extracts an integer from the beginning of a string. |
-| `parseFloat()` | Extracts a decimal number from the beginning of a string. |
-| `String()` | Safest way to convert any value to a string. |
-| `.toString()` | Converts a number to a string but cannot be used on `null` or `undefined`. |
+| Method           | Use Case                                                                       |
+| ---------------- | ------------------------------------------------------------------------------ |
+| `Number()`     | Converts the entire string. Returns`NaN` if the string isn't a valid number. |
+| `+str`         | Shorthand for`Number()`.                                                     |
+| `parseInt()`   | Extracts an integer from the beginning of a string.                            |
+| `parseFloat()` | Extracts a decimal number from the beginning of a string.                      |
+| `String()`     | Safest way to convert any value to a string.                                   |
+| `.toString()`  | Converts a number to a string but cannot be used on`null` or `undefined`.  |
 
 ### Examples
 

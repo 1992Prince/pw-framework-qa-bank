@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 import testdata from "../../testdata/loginfunctionality.json" with { type: 'json' }; 
 
 /**
- * In JSON file we have objects with different keys like "validRegistration" and 
+ * In JSON file we have objects[Object with object ] with different keys like "validRegistration" and 
  * "invalidEmailFormat".
  * after importing the JSON file, we will get JSON object with keys and values.
  * we can access the values of the keys using dot notation or bracket notation.
